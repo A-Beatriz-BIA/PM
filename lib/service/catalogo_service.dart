@@ -7,8 +7,12 @@ class Catalogo {
     required this.itens
   });
 
+  Produto findProdutoById(int id){
+    return withEstoque().firstWhere((element) => element.id == id);
+  }
+
   List<Produto> filter(String texto) {
-    return itens.where((element) => matchNomeOrDescricao(element, texto)).toList();    
+    return withEstoque().where((element) => matchNomeOrDescricao(element, texto)).toList();    
 
   }
 

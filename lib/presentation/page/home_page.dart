@@ -9,18 +9,37 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final catalogo = context.read<Catalogo>();
+    final itens = catalogo.withEstoque();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home"),
+      body: CustomScrollView(
+        slivers: [
+          builAppBar(context),
+          const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 12,
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) => index < itens.length ?
+              ProdutoListItem(id: itens[index].id) : null,
+            ),
+          ),
+        ],
       ),
-      body: ListView.separated(
-        separatorBuilder: (context, index) => const Divider(),
-
-        itemCount: catalogo.withEstoque().length,
-        itemBuilder: (context, index) => ProdutoListItem(index:index),
-      ),
-
     );
   }
+
+  Widget builAppBar(BuildContext context) => SliverAppBar(
+    title: const Text("Home"),
+    floating: true,
+    snap: true,
+    actions: [
+      IconButton(
+        onPressed:(){}, 
+        icon: const Icon(Icons.shopping_cart),
+      ),
+    ],
+  );
 }
